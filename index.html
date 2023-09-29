@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>Weather Dashboard</title>
+  </head>
+  <body>
+    <header class="header-container">
+      <h1>Weather Dashboard</h1>
+    </header>
+
+    <main class="container-fluid">
+      <div class="d-flex flex-row">
+        <div class="search-input-container col-12 col-md-3">
+          <h2>Search for a City</h2>
+          <input
+            class="form-control"
+            id="city-search"
+            type="search"
+            placeholder="Denver"
+            aria-label="Search"
+          />
+          <button class="button col-12 mt-3" id="search-button" type="submit">
+            Search
+          </button>
+          <hr />
+          <div class="search-history-container">
+            <button class="button col-12" id="clear-button">Clear</button>
+            <h3 class="mt-3">Search History</h3>
+            <div id="search-history-results"></div>
+          </div>
+        </div>
+
+        <div class="city-weather-container col-12 col-md-9">
+          <div class="current-weather-container">
+            <h2 class="mr-0" id="current-weather-for"></h2>
+            <div id="current-weather-text"></div>
+          </div>
+          <div class="five-day-forecast-container">
+            <h2 id="five-day-text"></h2>
+            <div
+              class="d-flex flex-row justify-content-between"
+              id="five-day-forecast"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+  </body>
+</html>
