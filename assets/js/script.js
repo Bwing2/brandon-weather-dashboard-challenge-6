@@ -6,13 +6,38 @@ var currentWeatherEl = document.querySelector("#current-weather-text");
 var fiveDayTextEl = document.querySelector("#five-day-text");
 var fiveDayForecastEl = document.querySelector("#five-day-forecast");
 
+var WeatherContainerEl = document.querySelector(".current-weather-container");
+var FiveDayContainerEl = document.querySelector(".five-day-forecast-container");
+
 var apiKey = "5dba84f4402b3859fe8edfb84e23c069";
 
 // Search button for cities
 searchButtonEl.addEventListener("click", function () {
-  var cityStored = citySearchEl.value.toLowerCase();
+  cityLocationSearch();
+});
+
+// Enter Key Press
+citySearchEl.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    cityLocationSearch();
+  }
+});
+
+// Clears local storage
+clearButtonEl.addEventListener("click", function () {
+  localStorage.clear();
+  location.reload();
+});
+
+// Used for city search, and storing/retrieving data from local storage.
+function cityLocationSearch() {
+  var cityStored = citySearchEl.value.trim().toLowerCase();
   city = cityStored.toString();
-  console.log(city);
+
+  if (!cityStored) {
+    citySearchEl.setAttribute("placeholder", "Please type a city name");
+    return;
+  }
 
   var cityArray;
   if (localStorage.getItem("searchedCities")) {
@@ -29,13 +54,7 @@ searchButtonEl.addEventListener("click", function () {
 
   readFromLocalStorage();
   currentLocation(city);
-});
-
-// Clears local storage
-clearButtonEl.addEventListener("click", function () {
-  localStorage.clear();
-  location.reload();
-});
+}
 
 function currentLocation(city) {
   // Looks at name of city that was entered, and calls the coordinates.
@@ -60,6 +79,8 @@ function currentLocation(city) {
         .then(function (data) {
           currentWeatherEl.innerHTML = "";
 
+          WeatherContainerEl.classList.add("cool-border");
+
           // Variables for dates, months starts at 0 so we add 1.
           var d = new Date();
           var dayOfMonth = d.getDate();
@@ -68,9 +89,6 @@ function currentLocation(city) {
 
           var icon = data.weather[0].icon;
           var iconURL = `<img src="https://openweathermap.org/img/wn/${icon}.png"/>`;
-
-          var WeatherContainerEl = document.querySelector(".current-weather-container");
-          WeatherContainerEl.classList.add("cool-border");
 
           var currentWeatherFor = document.querySelector(
             "#current-weather-for"
@@ -90,7 +108,7 @@ function currentLocation(city) {
 
           var humidity = data.main.humidity;
           var humidityParagraph = document.createElement("p");
-          humidityParagraph.innerHTML = `Humidity ${humidity} %`;
+          humidityParagraph.innerHTML = `Humidity ${humidity}%`;
           currentWeatherEl.appendChild(humidityParagraph);
 
           // Uses the selected location to call the forecast for the next 5 days.
@@ -120,7 +138,6 @@ function currentLocation(city) {
               for (var i = 0; i < filteredArray.length; i++) {
                 var currentElement = filteredArray[i];
 
-                var FiveDayContainerEl = document.querySelector(".five-day-forecast-container");
                 FiveDayContainerEl.classList.add("cool-border");
 
                 var fiveDayDateDiv = document.createElement("div");
@@ -152,7 +169,7 @@ function currentLocation(city) {
 
                 var fiveDayHumidityDiv = document.createElement("div");
                 var humidity = currentElement.main.humidity;
-                fiveDayHumidityDiv.innerHTML = `Humidity ${humidity} %`;
+                fiveDayHumidityDiv.innerHTML = `Humidity: ${humidity}%`;
                 forecastDiv.appendChild(fiveDayHumidityDiv);
 
                 fiveDayForecastEl.appendChild(forecastDiv);
@@ -162,14 +179,6 @@ function currentLocation(city) {
         });
     });
 }
-
-// // var citySet = new Set(cities);
-
-// choose one or the other
-// if (!cities.includes(newCity)) {
-//   cities.push(newCity)
-//   localStorage.setItem("searchCities", cities)
-// }
 
 // Adds the local storage to the search history.
 function readFromLocalStorage() {
@@ -201,6 +210,5 @@ function readFromLocalStorage() {
   }
 }
 
+// Search history is always visable unless cleared
 readFromLocalStorage();
-
-//
