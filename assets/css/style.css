@@ -61,9 +61,17 @@ hr {
     background-color: #8C0DDE;
 }
 
-#history-button {
-    background-color: none;
+.cool-border {
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #8C0DDE;
 }
+
+.five-div {
+    padding: 10px;
+    border: 1px solid #8C0DDE;
+}
+
 
 @media (max-width: 769px) {
     .d-flex {

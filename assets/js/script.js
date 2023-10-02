@@ -21,12 +21,14 @@ searchButtonEl.addEventListener("click", function () {
     cityArray = [];
   }
 
-  cityArray.push(city);
+  if (!cityArray.includes(city)) {
+    cityArray.push(city);
+  }
 
   localStorage.setItem("searchedCities", JSON.stringify(cityArray));
 
   readFromLocalStorage();
-  currentLocation();
+  currentLocation(city);
 });
 
 // Clears local storage
@@ -66,6 +68,9 @@ function currentLocation(city) {
 
           var icon = data.weather[0].icon;
           var iconURL = `<img src="https://openweathermap.org/img/wn/${icon}.png"/>`;
+
+          var WeatherContainerEl = document.querySelector(".current-weather-container");
+          WeatherContainerEl.classList.add("cool-border");
 
           var currentWeatherFor = document.querySelector(
             "#current-weather-for"
@@ -115,6 +120,9 @@ function currentLocation(city) {
               for (var i = 0; i < filteredArray.length; i++) {
                 var currentElement = filteredArray[i];
 
+                var FiveDayContainerEl = document.querySelector(".five-day-forecast-container");
+                FiveDayContainerEl.classList.add("cool-border");
+
                 var fiveDayDateDiv = document.createElement("div");
                 var forecastDiv = document.createElement("div");
 
@@ -133,7 +141,6 @@ function currentLocation(city) {
                 forecastDiv.appendChild(fiveDayIconDiv);
 
                 var fiveDayTempDiv = document.createElement("div");
-                fiveDayTempDiv.classList.add("five-div");
                 var temp = currentElement.main.temp;
                 fiveDayTempDiv.innerHTML = `Temp: ${temp}&#8457`;
                 forecastDiv.appendChild(fiveDayTempDiv);
@@ -182,11 +189,13 @@ function readFromLocalStorage() {
 
       saveHistory.addEventListener("click", function (event) {
         var city = event.target.getAttribute("id");
-        citySearchEl.value = city;
         currentLocation(city);
       });
 
-      saveHistory.innerHTML = currentCity;
+      var firstLetterCaps =
+        currentCity.charAt(0).toUpperCase() + currentCity.slice(1);
+
+      saveHistory.innerHTML = firstLetterCaps;
       searchHistoryResultsEl.appendChild(saveHistory);
     }
   }
