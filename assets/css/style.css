@@ -7,6 +7,10 @@ h1 {
     color: white;
 }
 
+h3::first-letter {
+    text-transform: capitalize;
+}
+
 hr {
     color: blue;
 }
@@ -20,6 +24,11 @@ hr {
 .search-input-container {
     padding: 10px;
     border-right: 1px solid #0F3FFA;
+}
+
+#search-history-results {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .city-weather-container {
@@ -52,6 +61,9 @@ hr {
     background-color: #8C0DDE;
 }
 
+#history-button {
+    background-color: none;
+}
 
 @media (max-width: 769px) {
     .d-flex {

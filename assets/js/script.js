@@ -22,6 +22,7 @@ searchButtonEl.addEventListener("click", function () {
   }
 
   cityArray.push(city);
+
   localStorage.setItem("searchedCities", JSON.stringify(cityArray));
 
   readFromLocalStorage();
@@ -34,11 +35,11 @@ clearButtonEl.addEventListener("click", function () {
   location.reload();
 });
 
-function currentLocation(coordURL) {
+function currentLocation(city) {
   // Looks at name of city that was entered, and calls the coordinates.
-  var coordURL = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  var coordUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
-  fetch(coordURL)
+  fetch(coordUrl)
     .then(function (response) {
       return response.json();
     })
@@ -48,9 +49,9 @@ function currentLocation(coordURL) {
       var cityName = data[0].name;
 
       // Uses coordinates from above to call current weather data for specific location
-      var currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`;
+      var currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=imperial`;
 
-      fetch(currentWeatherURL)
+      fetch(currentWeatherUrl)
         .then(function (response) {
           return response.json();
         })
@@ -70,7 +71,7 @@ function currentLocation(coordURL) {
             "#current-weather-for"
           );
 
-          currentWeatherFor.innerHTML = `Current Weather For ${cityName} (${month}/${dayOfMonth}/${year}) ${iconURL}`;
+          currentWeatherFor.innerHTML = `Current Weather for ${cityName} (${month}/${dayOfMonth}/${year})${iconURL}`;
 
           var temp = data.main.temp;
           var tempParagraph = document.createElement("p");
@@ -96,6 +97,7 @@ function currentLocation(coordURL) {
             })
             .then(function (data) {
               fiveDayForecastEl.innerHTML = "";
+              console.log(data);
 
               var filteredArray = [];
 
@@ -104,8 +106,8 @@ function currentLocation(coordURL) {
 
               fiveDayForecastText.innerHTML = `5-Day Forecast`;
 
-              // pulls 40 results overall for every 3 hours, but we only need 5 so we increment 8 each time.
-              for (var i = 0; i < data.list.length; i += 8) {
+              // pulls 40 results overall for every 3 hours, but we only need 5 so we increment 7 each time.
+              for (var i = 9; i < data.list.length; i += 7) {
                 var currentElement = data.list[i];
                 filteredArray.push(currentElement);
               }
@@ -113,9 +115,8 @@ function currentLocation(coordURL) {
               for (var i = 0; i < filteredArray.length; i++) {
                 var currentElement = filteredArray[i];
 
-                var forecastDiv = document.createElement("div");
-
                 var fiveDayDateDiv = document.createElement("div");
+                var forecastDiv = document.createElement("div");
 
                 // dt counts in milliseconds, so we multiply by 1000 to get seconds for an accurate date reading.
                 var d = new Date(currentElement.dt * 1000);
@@ -155,15 +156,36 @@ function currentLocation(coordURL) {
     });
 }
 
+// // var citySet = new Set(cities);
+
+// choose one or the other
+// if (!cities.includes(newCity)) {
+//   cities.push(newCity)
+//   localStorage.setItem("searchCities", cities)
+// }
+
 // Adds the local storage to the search history.
 function readFromLocalStorage() {
   searchHistoryResultsEl.innerHTML = "";
+
   var cities = localStorage.getItem("searchedCities");
+
   if (cities) {
     cities = JSON.parse(cities);
     for (var i = 0; i < cities.length; i++) {
       var currentCity = cities[i];
-      var saveHistory = document.createElement("div");
+      console.log(currentCity);
+
+      var saveHistory = document.createElement("button");
+      saveHistory.setAttribute("id", currentCity);
+      saveHistory.classList.add("button", "mb-3");
+
+      saveHistory.addEventListener("click", function (event) {
+        var city = event.target.getAttribute("id");
+        citySearchEl.value = city;
+        currentLocation(city);
+      });
+
       saveHistory.innerHTML = currentCity;
       searchHistoryResultsEl.appendChild(saveHistory);
     }
@@ -171,3 +193,5 @@ function readFromLocalStorage() {
 }
 
 readFromLocalStorage();
+
+//
