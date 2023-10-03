@@ -11,7 +11,7 @@ var FiveDayContainerEl = document.querySelector(".five-day-forecast-container");
 
 var apiKey = "5dba84f4402b3859fe8edfb84e23c069";
 
-// Search button for cities
+// Search button for Cities
 searchButtonEl.addEventListener("click", function () {
   cityLocationSearch();
 });
@@ -120,7 +120,6 @@ function currentLocation(city) {
             })
             .then(function (data) {
               fiveDayForecastEl.innerHTML = "";
-              console.log(data);
 
               var filteredArray = [];
 
@@ -174,7 +173,6 @@ function currentLocation(city) {
 
                 fiveDayForecastEl.appendChild(forecastDiv);
               }
-              console.log(filteredArray);
             });
         });
     });
@@ -190,7 +188,6 @@ function readFromLocalStorage() {
     cities = JSON.parse(cities);
     for (var i = 0; i < cities.length; i++) {
       var currentCity = cities[i];
-      console.log(currentCity);
 
       var saveHistory = document.createElement("button");
       saveHistory.setAttribute("id", currentCity);
