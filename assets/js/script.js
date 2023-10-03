@@ -129,7 +129,7 @@ function currentLocation(city) {
               fiveDayForecastText.innerHTML = `5-Day Forecast`;
 
               // pulls 40 results overall for every 3 hours, but we only need 5 so we increment 7 each time.
-              for (var i = 9; i < data.list.length; i += 7) {
+              for (var i = 7; i < data.list.length; i += 8) {
                 var currentElement = data.list[i];
                 filteredArray.push(currentElement);
               }
